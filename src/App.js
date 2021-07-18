@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+
+// CSS
 import './App.css';
 
-function App() {
+// * Components
+import GithubSticker from './components/github-sticker/github-sticker.component';
+import SearchBar from './components/searchbar/searchbar.component';
+import ForecastCard from './components/forecast-card/forecast-card.component';
+
+// * Configs
+// + Weather API custom config
+import { getForecast } from './config/API/weather-api.config';
+
+const App = () => {
+  const [location, setLocation] = useState('');
+
+  if (!!location) {
+    getForecast.fiveDaysThreeHours(location).then(setLocation);
+  }
+
+  console.log(location);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <SearchBar
+        setLocation={setLocation}
+      />
+      <ForecastCard />
+      <GithubSticker link={process.env.REACT_APP_GITHUB_ACCOUNT} />
     </div>
   );
-}
+};
 
 export default App;
