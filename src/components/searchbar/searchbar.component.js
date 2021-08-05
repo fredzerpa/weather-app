@@ -1,33 +1,37 @@
 import React from 'react';
 
-// * Material-UI Library
+// * Libraries
 // + Material-UI Components
-import {
-  Container,
-  TextField,
-  InputAdornment,
-  IconButton,
-} from '@material-ui/core';
+import { Container, TextField, InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
-// + Material-UI Icons Library
-import { SearchOutlined, LocationOn } from '@material-ui/icons';
 // + Material-UI Colors
 import { red } from '@material-ui/core/colors';
+// + Material-UI Icons Library
+import { SearchOutlined, LocationOn, LocationOff } from '@material-ui/icons';
+// + Custom Library to Animate Toggling Icons
+import ToggleIcons from '../toggle-icons/toggle-icons.components';
 
 const useStyles = makeStyles({
   searchbar: {
     padding: '1rem 0',
     width: '100%',
-    'font-size': '1.2rem',
+    // 'font-size': '1.2rem',
     'border-radius': '2rem',
-    margin: '5rem 0',
+    margin: '3rem 0',
     '& > *': {
-      background: 'whitesmoke',
+      background: 'white',
       'border-radius': 'inherit',
     },
   },
   locationIcon: {
     color: red[700],
+  },
+  option: {
+    fontSize: 15,
+    '& > span': {
+      marginRight: 10,
+      fontSize: 18,
+    },
   },
 });
 
@@ -46,8 +50,8 @@ const getUserLocation = async () => {
 };
 
 const handleLocationSearch = e => {
-  
-}
+  alert('hola');
+};
 
 const SearchBar = ({ setLocation }) => {
   const classes = useStyles();
@@ -67,13 +71,15 @@ const SearchBar = ({ setLocation }) => {
           ),
           endAdornment: (
             <InputAdornment position='end'>
-              <IconButton
-                aria-label='search my location'
-                color='secondary'
-                onClick={() => getUserLocation().then(setLocation)}
-              >
-                <LocationOn className={classes.locationIcon} />
-              </IconButton>
+              <ToggleIcons
+                defaultComponentIcon={<LocationOff />}
+                toggleComponentIcon={<LocationOn />}
+                className={classes.locationIcon}
+                onDefaultComponentClick={() =>
+                  getUserLocation().then(setLocation)
+                }
+                onToggleComponentClick={() => console.log('undone location')}
+              />
             </InputAdornment>
           ),
         }}
