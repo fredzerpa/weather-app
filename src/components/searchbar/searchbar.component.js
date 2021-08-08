@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // * Libraries
 // + Material-UI Components
-import { Container, TextField, InputAdornment } from '@material-ui/core';
+import {
+  Container,
+  TextField,
+  InputAdornment,
+  IconButton,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 // + Material-UI Colors
 import { red } from '@material-ui/core/colors';
 // + Material-UI Icons Library
-import { SearchOutlined, LocationOn, LocationOff } from '@material-ui/icons';
-// + Custom Library to Animate Toggling Icons
-import ToggleIcons from '../toggle-icons/toggle-icons.components';
+import { SearchOutlined, LocationOn } from '@material-ui/icons';
+
+// * Configs
+// + Weather API custom config
+import { getForecast } from '../../config/API/weather-api.config';
 
 const useStyles = makeStyles({
   searchbar: {
@@ -21,6 +28,11 @@ const useStyles = makeStyles({
     '& > *': {
       background: 'white',
       'border-radius': 'inherit',
+      '& *:-webkit-autofill': {
+        // input default border-radius overwrite
+        // as it overlaps with the previous border-radius
+        'border-radius': '0',
+      },
     },
   },
   locationIcon: {
@@ -35,7 +47,7 @@ const useStyles = makeStyles({
   },
 });
 
-const getUserLocation = async () => {
+const getUserGeoLocation = async () => {
   // ! Is promise function which will return the userLocation
   if (!('geolocation' in navigator)) {
     return 'Geolocation is not available on this device';
@@ -49,37 +61,50 @@ const getUserLocation = async () => {
   return userLocation;
 };
 
-const handleLocationSearch = e => {
-  alert('hola');
-};
-
-const SearchBar = ({ setLocation }) => {
+const SearchBar = ({ setGeoLocation }) => {
   const classes = useStyles();
+  const [cityToSearch, setCityToSearch] = useState('');
+  const [hasError, setHasError] = useState(false);
+
   return (
     <Container maxWidth='sm'>
       <TextField
         className={classes.searchbar}
         id='searchbar'
         type='search'
-        placeholder='Search a location'
+        placeholder='Search by city'
         variant='outlined'
+        onChange={e => setCityToSearch(e.target.value)}
+        onKeyDown={e => {
+          if (e.key === 'Enter')
+            getForecast.fiveDaysThreeHours
+              .byCity(cityToSearch.toLowerCase())
+              .then(console.log)
+              .catch(err => console.log(err.response));
+        }}
         InputProps={{
           startAdornment: (
             <InputAdornment position='start' disablePointerEvents>
+              {/* Search Icon - Button Less */}
               <SearchOutlined />
             </InputAdornment>
           ),
           endAdornment: (
             <InputAdornment position='end'>
-              <ToggleIcons
-                defaultComponentIcon={<LocationOff />}
-                toggleComponentIcon={<LocationOn />}
-                className={classes.locationIcon}
-                onDefaultComponentClick={() =>
-                  getUserLocation().then(setLocation)
+              {/* Location Icon */}
+              <IconButton
+                onClick={() =>
+                  getUserGeoLocation().then(
+                    ({ coords: { latitude: lat, longitude: lon } }) =>
+                      getForecast.fiveDaysThreeHours
+                        .byCoords({ lat, lon })
+                        .then(console.log)
+                        .catch(console.error)
+                  )
                 }
-                onToggleComponentClick={() => console.log('undone location')}
-              />
+              >
+                <LocationOn className={classes.locationIcon} />
+              </IconButton>
             </InputAdornment>
           ),
         }}
