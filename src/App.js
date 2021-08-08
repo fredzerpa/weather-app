@@ -1,32 +1,25 @@
 import React, { useState } from 'react';
 
 // CSS
-import './App.css';
+import './App.scss';
 
 // * Components
-import GithubSticker from './components/github-sticker/github-sticker.component';
 import SearchBar from './components/searchbar/searchbar.component';
-import ForecastCard from './components/forecast-card/forecast-card.component';
-
-// * Configs
-// + Weather API custom config
-import { getForecast } from './config/API/weather-api.config';
+import CardsOverview from './components/cards-overview/cards-overview.component';
+import GithubSticker from './components/github-sticker/github-sticker.component';
 
 const App = () => {
-  const [location, setLocation] = useState('');
+  const [city, setCity] = useState('');
+  const [geoLocation, setGeoLocation] = useState(null);
+  const [weather, setWeather] = useState(null);
 
-  if (!!location) {
-    getForecast.fiveDaysThreeHours(location).then(setLocation);
-  }
-
-  console.log(location);
+  console.log(geoLocation);
 
   return (
     <div className='App'>
-      <SearchBar
-        setLocation={setLocation}
-      />
-      <ForecastCard />
+      <SearchBar setGeoLocation={setGeoLocation} />
+      <CardsOverview />
+
       <GithubSticker link={process.env.REACT_APP_GITHUB_ACCOUNT} />
     </div>
   );
