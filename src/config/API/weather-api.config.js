@@ -15,7 +15,7 @@ export const getForecast = {
           }
         );
       } catch (error) {
-        throw error.response;
+        throw error;
       }
     },
     byCoords: async ({ lat, lon }) => {
@@ -27,7 +27,7 @@ export const getForecast = {
           }
         );
       } catch (error) {
-        console.error(error);
+        throw error;
       }
     },
   },
@@ -37,20 +37,7 @@ export const getForecast = {
         params: { q: query, appid: env.WEATHER_API_KEY },
       });
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   },
-};
-
-export const getOpenWeatherImage = async (codeOpenWeatherImage, size = 2) => {
-  const response = await axios.get(
-    `http://openweathermap.org/img/wn/${codeOpenWeatherImage}@${size}x.png`,
-    {
-      responseType: 'arraybuffer',
-    }
-  );
-  const buffer = Buffer.from(response.data, 'binary').toString('base64');
-  console.log(buffer);
-
-  return buffer;
 };
