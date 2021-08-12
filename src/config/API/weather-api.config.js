@@ -11,7 +11,7 @@ export const getForecast = {
         return await axios.get(
           `http://api.openweathermap.org/data/2.5/forecast`,
           {
-            params: { q: cityName, appid: env.WEATHER_API_KEY },
+            params: { q: cityName, appid: env.WEATHER_API_KEY, units: 'imperial' },
           }
         );
       } catch (error) {
@@ -23,7 +23,7 @@ export const getForecast = {
         return await axios.get(
           `http://api.openweathermap.org/data/2.5/forecast`,
           {
-            params: { lat, lon, appid: env.WEATHER_API_KEY },
+            params: { lat, lon, appid: env.WEATHER_API_KEY, units: 'imperial' },
           }
         );
       } catch (error) {
@@ -34,7 +34,7 @@ export const getForecast = {
   currentWeather: async query => {
     try {
       return await axios.get(`http://api.openweathermap.org/data/2.5/weather`, {
-        params: { q: query, appid: env.WEATHER_API_KEY },
+        params: { q: query, appid: env.WEATHER_API_KEY, units: 'imperial' },
       });
     } catch (error) {
       throw error;
