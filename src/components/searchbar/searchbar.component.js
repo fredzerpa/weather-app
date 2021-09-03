@@ -16,15 +16,13 @@ import { SearchOutlined, LocationOn } from '@material-ui/icons';
 
 // * Configs
 // + Weather API custom config
-import { getForecast } from '../../config/API/weather-api.config';
+import { getForecast } from '../../config/API/open-weather/open-weather.api';
 
 const useStyles = makeStyles({
   searchbar: {
     padding: '1rem 0',
     width: '100%',
-    // 'font-size': '1.2rem',
     'border-radius': '2rem',
-    margin: '3rem 0',
     '& > *': {
       background: 'white',
       'border-radius': 'inherit',
@@ -64,8 +62,6 @@ const getUserGeoLocation = async () => {
 const SearchBar = ({ setGeoLocation }) => {
   const classes = useStyles();
   const [cityToSearch, setCityToSearch] = useState('');
-  const [hasError, setHasError] = useState(false);
-
   return (
     <Container maxWidth='sm'>
       <TextField
@@ -79,7 +75,7 @@ const SearchBar = ({ setGeoLocation }) => {
           if (e.key === 'Enter')
             getForecast.fiveDaysThreeHours
               .byCity(cityToSearch.toLowerCase())
-              .then(console.log)
+              .then(setGeoLocation)
               .catch(err => console.log(err.response));
         }}
         InputProps={{
@@ -98,7 +94,7 @@ const SearchBar = ({ setGeoLocation }) => {
                     ({ coords: { latitude: lat, longitude: lon } }) =>
                       getForecast.fiveDaysThreeHours
                         .byCoords({ lat, lon })
-                        .then(console.log)
+                        .then(setGeoLocation)
                         .catch(console.error)
                   )
                 }
