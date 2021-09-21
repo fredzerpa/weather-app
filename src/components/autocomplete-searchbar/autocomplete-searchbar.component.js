@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 
 const AutocompleteSearchbar = ({ setAddressesData }) => {
   // Data from API
-  const [value, setValue] = React.useState(null);
+  const value = null;
   // Data from Input
   const [inputValue, setInputValue] = React.useState('');
   const [open, setOpen] = React.useState(false);
@@ -108,8 +108,8 @@ const AutocompleteSearchbar = ({ setAddressesData }) => {
       open={open}
       value={value}
       onChange={(event, newAddress) => {
-        setAddressesData(newAddress);
         setOptions(newAddress ? [newAddress, ...options] : options);
+        setAddressesData(newAddress);
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
