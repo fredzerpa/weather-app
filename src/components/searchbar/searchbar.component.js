@@ -16,10 +16,6 @@ import { SearchOutlined, LocationOn } from '@material-ui/icons';
 // + Axios
 import axios from 'axios';
 
-// * API
-// + Open Weather
-import { getForecast } from '../../config/API/open-weather/open-weather.api';
-
 const useStyles = makeStyles({
   searchbar: {
     padding: '1rem 0',
@@ -66,7 +62,7 @@ const getUserGeoLocation = async () => {
   return await axios.get('https://ipapi.co/json');
 };
 
-const SearchBar = ({ setAddressData, ...props }) => {
+const SearchBar = ({ setAddressesData, ...props }) => {
   const classes = useStyles();
 
   return (
@@ -102,7 +98,7 @@ const SearchBar = ({ setAddressData, ...props }) => {
               {/* Location Icon */}
               <IconButton
                 onClick={() =>
-                  getUserGeoLocation().then(({ data }) => setAddressData(data))
+                  getUserGeoLocation().then(({ data }) => setAddressesData(data))
                 }
               >
                 <LocationOn className={classes.locationIcon} />
