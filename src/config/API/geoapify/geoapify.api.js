@@ -28,36 +28,44 @@ export const autocompleteAddress = {
       throw error;
     }
   },
-  byState: async state => {
+  byState: async (stateName, cancelToken) => {
     try {
-      return await axios({
-        method: 'GET',
-        url: `${BASE_URL}/autocomplete`,
-        headers: {
-          apikey: env.GEOCODE_API_KEY,
+      const data = await axios(
+        {
+          method: 'GET',
+          url: `${BASE_URL}/autocomplete`,
+          params: {
+            apiKey: env.GEOAPIFY_API_KEY,
+            text: stateName,
+            type: 'city',
+            limit: '5',
+          },
         },
-        params: {
-          text: state,
-          layers: 'region',
-        },
-      });
+        // Pass the cancel token to the current request
+        { cancelToken: cancelToken.token }
+      );
+      return { results: data };
     } catch (error) {
       throw error;
     }
   },
-  byCountry: async country => {
+  byCountry: async (countryName, cancelToken) => {
     try {
-      return await axios({
-        method: 'GET',
-        url: `${BASE_URL}/autocomplete`,
-        headers: {
-          apikey: env.GEOCODE_API_KEY,
+      const data = await axios(
+        {
+          method: 'GET',
+          url: `${BASE_URL}/autocomplete`,
+          params: {
+            apiKey: env.GEOAPIFY_API_KEY,
+            text: countryName,
+            type: 'city',
+            limit: '5',
+          },
         },
-        params: {
-          text: country,
-          layers: 'country',
-        },
-      });
+        // Pass the cancel token to the current request
+        { cancelToken: cancelToken.token }
+      );
+      return { results: data };
     } catch (error) {
       throw error;
     }

@@ -11,7 +11,11 @@ export const getForecast = {
         return await axios.get(
           `http://api.openweathermap.org/data/2.5/forecast`,
           {
-            params: { q: cityName, appid: env.WEATHER_API_KEY, units: 'imperial' },
+            params: {
+              q: cityName,
+              appid: env.WEATHER_API_KEY,
+              units: 'imperial',
+            },
           }
         );
       } catch (error) {
