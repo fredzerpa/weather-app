@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AutocompleteSearchbar = ({ setAddressesData }) => {
+const AutocompleteSearchbar = ({ setAddressData }) => {
   // Data from API
   const value = null;
   // Data from Input
@@ -109,7 +109,7 @@ const AutocompleteSearchbar = ({ setAddressesData }) => {
       value={value}
       onChange={(event, newAddress) => {
         setOptions(newAddress ? [newAddress, ...options] : options);
-        setAddressesData(newAddress);
+        setAddressData(newAddress);
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
@@ -131,7 +131,7 @@ const AutocompleteSearchbar = ({ setAddressesData }) => {
         paper: classes.optionsWrapper,
       }}
       renderInput={params => (
-        <SearchBar {...params} setAddressesData={setAddressesData} />
+        <SearchBar {...params} setAddressData={setAddressData} />
       )}
       renderOption={option => {
         const optionCustomAddress =

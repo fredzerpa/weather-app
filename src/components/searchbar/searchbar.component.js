@@ -59,10 +59,11 @@ const getUserGeoLocation = async () => {
   // const userLocation = await askUserLocation();
   // return userLocation;
 
+  // More data than navigator
   return await axios.get('https://ipapi.co/json');
 };
 
-const SearchBar = ({ setAddressesData, ...props }) => {
+const SearchBar = ({ setAddressData, ...props }) => {
   const classes = useStyles();
 
   return (
@@ -98,7 +99,7 @@ const SearchBar = ({ setAddressesData, ...props }) => {
               {/* Location Icon */}
               <IconButton
                 onClick={() =>
-                  getUserGeoLocation().then(({ data }) => setAddressesData(data))
+                  getUserGeoLocation().then(({ data }) => setAddressData(data))
                 }
               >
                 <LocationOn className={classes.locationIcon} />
