@@ -16,12 +16,7 @@ import {
   CardActions,
 } from '@material-ui/core'; // Material-UI v4
 // + Material-UI Icons
-import {
-  Close,
-  ExpandMore,
-  Favorite,
-  FavoriteBorder,
-} from '@material-ui/icons';
+import { ExpandMore, Favorite, FavoriteBorder } from '@material-ui/icons';
 // + CLSX for Classes Construct
 import clsx from 'clsx';
 
@@ -204,26 +199,17 @@ const ForecastCard = ({ addressData, icon }) => {
           {/* Header */}
           <CardHeader
             action={
-              <Grid>
-                <IconButton
-                  aria-label='Toggle from favorite'
-                  // onClick={handleFavoriteClick}
-                  className={classes.favoriteButton}
-                >
-                  <Close style={{ color: 'white' }} />
-                </IconButton>
-                <IconButton
-                  aria-label='Toggle from favorite'
-                  onClick={handleFavoriteClick}
-                  className={classes.favoriteButton}
-                >
-                  {isFavorite ? (
-                    <Favorite style={{ color: 'white' }} />
-                  ) : (
-                    <FavoriteBorder style={{ color: 'white' }} />
-                  )}
-                </IconButton>
-              </Grid>
+              <IconButton
+                aria-label='Toggle from favorite'
+                onClick={handleFavoriteClick}
+                className={classes.favoriteButton}
+              >
+                {isFavorite ? (
+                  <Favorite style={{ color: 'white' }} />
+                ) : (
+                  <FavoriteBorder style={{ color: 'white' }} />
+                )}
+              </IconButton>
             }
             title='Cloudy'
             titleTypographyProps={{
