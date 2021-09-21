@@ -10,7 +10,7 @@ export const getForecast = {
   fiveDaysThreeHours: {
     byCity: async cityName => {
       try {
-        return await axios({
+        const { data } = await axios({
           method: 'GET',
           url: `${BASE_URL}/forecast`,
           params: {
@@ -19,17 +19,19 @@ export const getForecast = {
             units: 'imperial',
           },
         });
+        return { results: data };
       } catch (error) {
         throw error;
       }
     },
     byCoords: async ({ lat, lon }) => {
       try {
-        return await axios({
+        const { data } = await axios({
           method: 'GET',
           url: `${BASE_URL}/forecast`,
           params: { lat, lon, appid: env.WEATHER_API_KEY, units: 'imperial' },
         });
+        return { results: data };
       } catch (error) {
         throw error;
       }
@@ -37,11 +39,12 @@ export const getForecast = {
   },
   currentWeather: async query => {
     try {
-      return await axios({
+      const { data } = await axios({
         method: 'GET',
         url: `${BASE_URL}/weather`,
         params: { q: query, appid: env.WEATHER_API_KEY, units: 'imperial' },
       });
+      return { results: data };
     } catch (error) {
       throw error;
     }
