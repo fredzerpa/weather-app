@@ -12,7 +12,6 @@ import ForecastCardsOverview from './components/forecast-cards-overview/forecast
 import GithubCorner from 'react-github-corner';
 import Header from './components/header/header.component';
 import Footer from './components/footer/footer.component';
-import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   root: {
