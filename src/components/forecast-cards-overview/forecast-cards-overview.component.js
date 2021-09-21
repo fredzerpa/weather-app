@@ -16,47 +16,47 @@ const useStyles = makeStyles({
   },
 });
 
-const WEATHER_ICONS_MATCH = {
-  // -- Group 2xx: Thunderstorm
-  Thunderstorm: {
-    211: null, // Thunderstorm without Rain
-    default: null,
-  },
-  // -- Group 3xx: Drizzle
-  Drizzle: {
-    default: null,
-  },
-  // -- Group 5xx: Rain
-  Rain: {
-    default: null,
-  },
-  // -- Group 6xx: Snow
-  Snow: {
-    default: null,
-  },
-  // -- Group 7xx: Atmosphere
-  Atmosphere: {
-    default: null,
-  },
-  // -- Group 800: Clear
-  Clear: {
-    800: {
-      // Clear
-      day: null,
-      night: null,
-    },
-    default: null,
-  },
-  // -- Group 80x: Clouds
-  Clouds: {
-    801: {
-      // Few clouds
-      day: null,
-      night: null,
-    },
-    default: null,
-  },
-};
+// const WEATHER_ICONS_MATCH = {
+//   // -- Group 2xx: Thunderstorm
+//   Thunderstorm: {
+//     211: null, // Thunderstorm without Rain
+//     default: null,
+//   },
+//   // -- Group 3xx: Drizzle
+//   Drizzle: {
+//     default: null,
+//   },
+//   // -- Group 5xx: Rain
+//   Rain: {
+//     default: null,
+//   },
+//   // -- Group 6xx: Snow
+//   Snow: {
+//     default: null,
+//   },
+//   // -- Group 7xx: Atmosphere
+//   Atmosphere: {
+//     default: null,
+//   },
+//   // -- Group 800: Clear
+//   Clear: {
+//     800: {
+//       // Clear
+//       day: null,
+//       night: null,
+//     },
+//     default: null,
+//   },
+//   // -- Group 80x: Clouds
+//   Clouds: {
+//     801: {
+//       // Few clouds
+//       day: null,
+//       night: null,
+//     },
+//     default: null,
+//   },
+// };
 
 const ForecastCardsOverview = ({ addressData }) => {
   const classes = useStyles();
