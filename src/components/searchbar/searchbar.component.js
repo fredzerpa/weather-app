@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // * Libraries
 // + Material-UI Components
@@ -13,90 +13,96 @@ import { makeStyles } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 // + Material-UI Icons Library
 import { SearchOutlined, LocationOn } from '@material-ui/icons';
+// + Axios
+import axios from 'axios';
 
-// * Configs
-// + Weather API custom config
+// * API
+// + Open Weather
 import { getForecast } from '../../config/API/open-weather/open-weather.api';
 
 const useStyles = makeStyles({
   searchbar: {
     padding: '1rem 0',
     width: '100%',
-    'border-radius': '2rem',
+    'border-radius': '1.75rem',
     '& > *': {
       background: 'white',
+      padding: '9px!important', // Overrides inputRoot padding
       'border-radius': 'inherit',
-      '& *:-webkit-autofill': {
-        // input default border-radius overwrite
-        // as it overlaps with the previous border-radius
-        'border-radius': '0',
-      },
+    },
+
+    // ! Remove Default X icon from Google Chrome
+    '& input[type="search"]::-webkit-search-decoration': {
+      display: 'none',
+    },
+    '& input[type="search"]::-webkit-search-cancel-button': {
+      display: 'none',
+    },
+    '& input[type="search"]::-webkit-search-results-button': {
+      display: 'none',
+    },
+    '& input[type="search"]::-webkit-search-results-decoration': {
+      display: 'none',
     },
   },
   locationIcon: {
     color: red[700],
   },
-  option: {
-    fontSize: 15,
-    '& > span': {
-      marginRight: 10,
-      fontSize: 18,
-    },
-  },
 });
 
 const getUserGeoLocation = async () => {
   // ! Is promise function which will return the userLocation
-  if (!('geolocation' in navigator)) {
-    return 'Geolocation is not available on this device';
-  }
-  const askUserLocation = () =>
-    // * It's a promise so we can get the value in other sections of the code
-    new Promise((res, rej) => {
-      navigator.geolocation.getCurrentPosition(res, rej);
-    });
-  const userLocation = await askUserLocation();
-  return userLocation;
+  // if (!('geolocation' in navigator)) {
+  //   return 'Geolocation is not available on this device';
+  // }
+  // const askUserLocation = () =>
+  // // * It's a promise so we can get the value in other sections of the code
+  //   new Promise((res, rej) => {
+  //     navigator.geolocation.getCurrentPosition(res, rej);
+  //   });
+  // const userLocation = await askUserLocation();
+  // return userLocation;
+
+  return await axios.get('https://ipapi.co/json');
 };
 
-const SearchBar = ({ setGeoLocation }) => {
+const SearchBar = ({ setAddressData, ...props }) => {
   const classes = useStyles();
-  const [cityToSearch, setCityToSearch] = useState('');
+
   return (
     <Container maxWidth='sm'>
       <TextField
+        {...props}
         className={classes.searchbar}
         id='searchbar'
         type='search'
         placeholder='Search by city'
         variant='outlined'
-        onChange={e => setCityToSearch(e.target.value)}
-        onKeyDown={e => {
-          if (e.key === 'Enter')
-            getForecast.fiveDaysThreeHours
-              .byCity(cityToSearch.toLowerCase())
-              .then(setGeoLocation)
-              .catch(err => console.log(err.response));
+        inputProps={{
+          ...props.inputProps,
+          autoComplete: 'off',
         }}
         InputProps={{
+          ...props.InputProps,
           startAdornment: (
-            <InputAdornment position='start' disablePointerEvents>
+            <InputAdornment
+              position='end'
+              disablePointerEvents
+              style={{ margin: '0 .75rem' }}
+            >
               {/* Search Icon - Button Less */}
               <SearchOutlined />
             </InputAdornment>
           ),
           endAdornment: (
             <InputAdornment position='end'>
+              {/* Get Icons from Material Autocomplete Library */}
+              {props?.InputProps?.endAdornment?.props?.children}
+
               {/* Location Icon */}
               <IconButton
                 onClick={() =>
-                  getUserGeoLocation().then(
-                    ({ coords: { latitude: lat, longitude: lon } }) =>
-                      getForecast.fiveDaysThreeHours
-                        .byCoords({ lat, lon })
-                        .then(setGeoLocation)
-                        .catch(console.error)
-                  )
+                  getUserGeoLocation().then(({ data }) => setAddressData(data))
                 }
               >
                 <LocationOn className={classes.locationIcon} />

@@ -25,6 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Footer = props => {
+  console.log('render footer')
   const classes = useStyles();
   return (
     <Container className={classes.container} maxWidth={false}>
@@ -43,4 +44,4 @@ const Footer = props => {
   );
 };
 
-export default Footer;
+export default React.memo(Footer);

@@ -26,10 +26,13 @@ const useStyles = makeStyles(theme => ({
   },
   optionsWrapper: {
     borderRadius: '1rem!important',
+    // Slight disminuition of the width for a better aesthethic
+    marginLeft: '.25rem',
+    marginRight: '.25rem',
   },
 }));
 
-const AutocompleteSearchbar = () => {
+const AutocompleteSearchbar = ({ setAddressesData }) => {
   // Data from API
   const [value, setValue] = React.useState(null);
   // Data from Input
@@ -75,14 +78,17 @@ const AutocompleteSearchbar = () => {
     fetchOptions(inputValue).then(({ results }) => {
       if (active) {
         let newOptions = [];
-        console.log(results);
 
         if (value) {
           newOptions = [value];
         }
 
         if (results.data.features) {
-          newOptions = [...newOptions, ...results.data.features];
+          newOptions = [
+            ...newOptions,
+            // Taking only relevant data (properties)
+            ...results.data.features.map(feature => feature.properties),
+          ];
         }
 
         setOptions(newOptions);
@@ -93,45 +99,47 @@ const AutocompleteSearchbar = () => {
     return () => {
       active = false;
     };
-  }, [value, inputValue, fetchOptions]);
+  }, [inputValue, value, fetchOptions]);
 
   return (
     <Autocomplete
       id='city-searchbar'
       popupIcon={null}
+      open={open}
       value={value}
-      onChange={(event, newValue) => {
-        setOptions(newValue ? [newValue, ...options] : options);
-        setValue(newValue);
+      onChange={(event, newAddress) => {
+        setAddressesData(newAddress);
+        setOptions(newAddress ? [newAddress, ...options] : options);
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
-      open={open}
       onOpen={() => {
         setOpen(true);
       }}
       onClose={() => {
         setOpen(false);
       }}
-      getOptionLabel={option =>
-        `${option.properties.city}, ${
-          option.properties.state
-        }, ${option.properties.country_code.toUpperCase()}`
-      }
+      getOptionLabel={option => {
+        return `${option.city}, ${
+          option.state
+        }, ${option.country_code.toUpperCase()}`;
+      }}
       options={options}
       loading={loading}
       classes={{
         paper: classes.optionsWrapper,
       }}
-      renderInput={params => <SearchBar {...params} />}
+      renderInput={params => (
+        <SearchBar {...params} setAddressesData={setAddressesData} />
+      )}
       renderOption={option => {
         const optionCustomAddress =
-          option.properties.city +
+          option.city +
           ', ' +
-          option.properties.state +
+          option.state +
           ', ' +
-          option.properties.country_code.toUpperCase();
+          option.country_code.toUpperCase();
         const matches = match(optionCustomAddress, inputValue);
         const parts = parse(optionCustomAddress, matches);
         return (
@@ -150,7 +158,7 @@ const AutocompleteSearchbar = () => {
               ))}
 
               <Typography variant='body2' color='textSecondary'>
-                {option.properties.formatted}
+                {option.formatted}
               </Typography>
             </Grid>
           </Grid>
