@@ -5,42 +5,54 @@ import './App.css';
 
 // * Libraries
 // + Material-UI
-import { makeStyles } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 
 // * Components
-import SearchBar from './components/searchbar/searchbar.component';
-import CardsOverview from './components/cards-overview/cards-overview.component';
-import GithubSticker from './components/github-sticker/github-sticker.component';
+import ForecastCardsOverview from './components/forecast-cards-overview/forecast-cards-overview.component';
+import GithubCorner from 'react-github-corner';
+import Header from './components/header/header.component';
+import Footer from './components/footer/footer.component';
+import axios from 'axios';
 
-import background from './assets/weather-backgrounds/snow-mountains.jpg';
-
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
-    width: '100vw',
-    height: '100vh',
-    background:
-      `#000000 url(${background}) no-repeat center center`,
-    backgroundSize: 'cover',
-    overflowY: 'auto',
+    width: '100%',
+    minHeight: '100vh',
+    background: `#181818`,
   },
-});
+  githubCorner: {
+    [theme.breakpoints.down('xs')]: {
+      // Not shown on small devices
+      display: 'none',
+    },
+  },
+}));
 
 const App = () => {
-  const [city, setCity] = useState('');
-  const [geoLocation, setGeoLocation] = useState(null);
-  const [weather, setWeather] = useState(null);
+  const [addressData, setAddressData] = useState(null);
 
   // -- Material Style
   const classes = useStyles();
-  
-  console.log(geoLocation);
+
+  console.log({ addressData });
 
   return (
-    <div className={classes.root}>
-      <SearchBar setGeoLocation={setGeoLocation} />
-      <CardsOverview geoLocation={geoLocation}/>
-      <GithubSticker link={process.env.REACT_APP_GITHUB_ACCOUNT} />
-    </div>
+    <Grid
+      className={classes.root}
+      container
+      direction='column'
+      justifyContent='center'
+    >
+      <Header setAddressData={setAddressData} />
+      {addressData ? <ForecastCardsOverview addressData={addressData} /> : null}
+      <GithubCorner
+        className={classes.githubCorner}
+        bannerColor='#fff'
+        octoColor='#000'
+        href={process.env.REACT_APP_GITHUB_ACCOUNT}
+      />
+      <Footer />
+    </Grid>
   );
 };
 
