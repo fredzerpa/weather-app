@@ -19,6 +19,8 @@ import {
 import { ExpandMore, Favorite, FavoriteBorder } from '@material-ui/icons';
 // + CLSX for Classes Construct
 import clsx from 'clsx';
+// + MomentJs
+import moment from 'moment';
 
 // * API
 // + Unsplash
@@ -30,6 +32,7 @@ import WeatherTimeline from '../weather-timeline/weather-timeline.component';
 // + Functions
 import {
   capitalizeFirstLetter,
+  convertFarenheitToCelcius,
   getRandomNumber,
 } from '../../utils/functions.utils';
 
@@ -151,13 +154,42 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ForecastCard = ({ addressData, icon }) => {
+
+
+const ForecastCard = ({ forecast, addressData, icon }) => {
   const [expanded, setExpanded] = React.useState(true);
   const [cardBgUrl, setCardBgUrl] = React.useState('');
   const [isFavorite, setIsFavorite] = React.useState(false);
 
   // ! Important: remember passing Object as props for useStyles
   const classes = useStyles({ cardBgUrl }); // Passing the url to Material Styles
+
+  // -- Variables
+  const todayForecast =
+    forecast.results.list.filter(
+      data =>
+        moment(data.dt_txt).calendar(null, {
+          sameDay: '[Today]',
+          nextDay: '[Tomorrow]',
+          nextWeek: 'dddd',
+          lastDay: '[Yesterday]',
+          lastWeek: '[Last] dddd',
+          sameElse: 'DD/MM/YYYY',
+        }) === 'Today' && moment(data.dt_txt).get('hour') === 12
+    )[0] ??
+    forecast.results.list.filter(
+      data =>
+        moment(data.dt_txt).calendar(null, {
+          sameDay: '[Today]',
+          nextDay: '[Tomorrow]',
+          nextWeek: 'dddd',
+          lastDay: '[Yesterday]',
+          lastWeek: '[Last] dddd',
+          sameElse: 'DD/MM/YYYY',
+        }) === 'Tomorrow' && moment(data.dt_txt).get('hour') === 12
+    )[0];
+
+  console.log(todayForecast);
 
   useEffect(() => {
     // Gets data from Unsplash API using a City as the query
@@ -211,13 +243,13 @@ const ForecastCard = ({ addressData, icon }) => {
                 )}
               </IconButton>
             }
-            title='Cloudy'
+            title={todayForecast.weather[0].main}
             titleTypographyProps={{
               variant: 'h2',
               component: 'h3',
               className: classes.cardTitle,
             }}
-            subheader='08 / 29 / 2021'
+            subheader={moment(todayForecast.dt_txt).format('DD/MM/YYYY')}
             subheaderTypographyProps={{
               variant: 'subtitle2',
               className: classes.cardSubtitle,
@@ -303,24 +335,25 @@ const ForecastCard = ({ addressData, icon }) => {
               className={classes.moreDataRightSide}
             >
               <Typography align='justify' variant='body2' noWrap>
-                26°C | 80°F
+                {Math.round(convertFarenheitToCelcius(todayForecast.main.temp))}
+                ℃ | {Math.round(todayForecast.main.temp)}℉
               </Typography>
               <Typography align='justify' variant='body2' noWrap>
-                Feels like: 84°F
+                Feels like: {Math.round(todayForecast.main.feels_like)}°F
               </Typography>
               <Typography align='justify' variant='body2' noWrap>
-                Wind: 14 mph
+                Wind: {todayForecast.wind.speed} mph
               </Typography>
               <Typography align='justify' variant='body2' noWrap>
-                Humidity: 92 %
+                Humidity: {todayForecast.main.humidity}%
               </Typography>
             </Grid>
           </Grid>
 
           {/* Carousel */}
           <TimelineCarousel className={classes.timelineCarousel} height='110px'>
-            {[...Array(40).keys()].map((value, i) => (
-              <WeatherTimeline key={i} />
+            {forecast.results.list.map((value, i) => (
+              <WeatherTimeline key={i} data={value} />
             ))}
           </TimelineCarousel>
         </Paper>

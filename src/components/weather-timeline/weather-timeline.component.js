@@ -12,6 +12,13 @@ import {
   Typography,
 } from '@material-ui/core';
 
+// + MomentJs
+import moment from 'moment';
+
+// * Config
+// + Utils
+import { convertFarenheitToCelcius } from '../../utils/functions.utils';
+
 const useStyles = makeStyles(theme => ({
   card: {
     // padding: theme.spacing(1),
@@ -55,14 +62,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const WeatherTimeline = ({ className, ...otherProps }) => {
+const WeatherTimeline = ({ data, className, ...otherProps }) => {
   const classes = useStyles();
+
+  const date = new Date(data.dt_txt);
 
   return (
     <Card className={`${classes.card} ${className ?? ''}`} {...otherProps}>
       {/* Card Header */}
       <CardHeader
-        title='Today'
+        title={moment(date).calendar(null, {
+          sameDay: '[Today]',
+          nextDay: '[Tomorrow]',
+          nextWeek: 'dddd',
+          lastDay: '[Yesterday]',
+          lastWeek: '[Last] dddd',
+          sameElse: 'DD/MM/YYYY',
+        })}
         classes={{
           title: classes.cardHeaderTitle,
         }}
@@ -88,14 +104,16 @@ const WeatherTimeline = ({ className, ...otherProps }) => {
             variant='button'
             className={classes.cardContentTypography}
           >
-            12:00 AM
+            {moment(date).format('h:mm a')}
           </Typography>
           <Typography
             align='center'
             variant='button'
             className={classes.cardContentTypography}
+            noWrap
           >
-            27℃ | 81℉
+            {Math.round(convertFarenheitToCelcius(data.main.temp))}℃ |{' '}
+            {Math.round(data.main.temp)}℉
           </Typography>
         </Grid>
       </CardContent>

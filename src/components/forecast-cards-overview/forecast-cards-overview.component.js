@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // * Libraries
 // + Material-UI
@@ -6,6 +6,10 @@ import { Grid, makeStyles } from '@material-ui/core';
 
 // * Components
 import ForecastCard from '../forecast-card/forecast-card.component';
+
+// * Utils
+// + API
+import { getForecast } from '../../config/API/open-weather/open-weather.api';
 
 // -- Material-UI Styles
 const useStyles = makeStyles({
@@ -60,8 +64,14 @@ const useStyles = makeStyles({
 
 const ForecastCardsOverview = ({ addressData }) => {
   const classes = useStyles();
+  const [forecast, setForecast] = React.useState(null);
 
-  return (
+  console.log({ forecast });
+  useEffect(() => {
+    // Gets data from Open Weather API using a City as the query
+    getForecast.fiveDaysThreeHours.byCity(addressData.city).then(setForecast);
+  }, [addressData]);
+  return forecast ? (
     <Grid
       container
       spacing={2}
@@ -71,16 +81,16 @@ const ForecastCardsOverview = ({ addressData }) => {
     >
       {/* Wrapper for the Cards. Should use one per Card  */}
       <Grid container item xs={12} md={6} lg={5} justifyContent='center'>
-        <ForecastCard addressData={addressData} />
+        <ForecastCard forecast={forecast} addressData={addressData} />
       </Grid>
       <Grid container item xs={12} md={6} lg={5} justifyContent='center'>
-        <ForecastCard addressData={addressData} />
+        <ForecastCard forecast={forecast} addressData={addressData} />
       </Grid>
       <Grid container item xs={12} md={6} lg={5} justifyContent='center'>
-        <ForecastCard addressData={addressData} />
+        <ForecastCard forecast={forecast} addressData={addressData} />
       </Grid>
     </Grid>
-  );
+  ) : null;
 };
 
 export default ForecastCardsOverview;
