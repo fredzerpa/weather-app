@@ -9,7 +9,7 @@ import ForecastCard from '../forecast-card/forecast-card.component';
 
 // * Utils
 // + API
-import { getForecast } from '../../config/API/open-weather/open-weather.api';
+import { getForecast } from '../../API/open-weather/open-weather.api';
 
 // -- Material-UI Styles
 const useStyles = makeStyles({

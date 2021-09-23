@@ -14,7 +14,7 @@ import parse from 'autosuggest-highlight/parse';
 import axios from 'axios';
 // * Components
 // + API
-import { autocompleteAddress } from '../../config/API/geoapify/geoapify.api';
+import { autocompleteAddress } from '../../API/geoapify/geoapify.api';
 // + Utils
 import SearchBar from '../searchbar/searchbar.component';
 

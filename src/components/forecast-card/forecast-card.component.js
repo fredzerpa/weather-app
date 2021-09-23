@@ -24,7 +24,7 @@ import moment from 'moment';
 
 // * API
 // + Unsplash
-import { searchPhotosByKeyword } from '../../config/API/unsplash/unsplash.api';
+import { searchPhotosByKeyword } from '../../API/unsplash/unsplash.api';
 import TimelineCarousel from '../timeline-carousel/timeline-carousel.component';
 import WeatherTimeline from '../weather-timeline/weather-timeline.component';
 
