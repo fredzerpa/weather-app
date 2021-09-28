@@ -43,7 +43,7 @@ const App = () => {
       justifyContent='center'
     >
       <Header setAddressData={setAddressData} />
-      {addressData ? <ForecastCardsOverview addressData={addressData} /> : null}
+      <ForecastCardsOverview />
       <GithubCorner
         className={classes.githubCorner}
         bannerColor='#fff'

@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 // * Libraries
 // + Material-UI
 import { Grid, makeStyles } from '@material-ui/core';
+// + React~Redux
+import { connect } from 'react-redux';
 
 // * Components
 import ForecastCard from '../forecast-card/forecast-card.component';
@@ -69,7 +71,7 @@ const ForecastCardsOverview = ({ addressData }) => {
   console.log({ forecast });
   useEffect(() => {
     // Gets data from Open Weather API using a City as the query
-    getForecast.fiveDaysThreeHours.byCity(addressData.city).then(setForecast);
+    // getForecast.fiveDaysThreeHours.byCity(addressData.city).then(setForecast);
   }, [addressData]);
   return forecast ? (
     <Grid
@@ -80,7 +82,7 @@ const ForecastCardsOverview = ({ addressData }) => {
       className={classes.container}
     >
       {/* Wrapper for the Cards. Should use one per Card  */}
-      <Grid container item xs={12} md={6} lg={5} justifyContent='center'>
+      {/* <Grid container item xs={12} md={6} lg={5} justifyContent='center'>
         <ForecastCard forecast={forecast} addressData={addressData} />
       </Grid>
       <Grid container item xs={12} md={6} lg={5} justifyContent='center'>
@@ -88,9 +90,13 @@ const ForecastCardsOverview = ({ addressData }) => {
       </Grid>
       <Grid container item xs={12} md={6} lg={5} justifyContent='center'>
         <ForecastCard forecast={forecast} addressData={addressData} />
-      </Grid>
+      </Grid> */}
     </Grid>
   ) : null;
 };
 
-export default ForecastCardsOverview;
+const mapStateToProps = state => ({
+  addressData: state.address.addressData,
+});
+
+export default connect(mapStateToProps)(ForecastCardsOverview);
