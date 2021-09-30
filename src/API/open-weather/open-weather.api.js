@@ -1,6 +1,8 @@
 // * Libraries
 // + Axios
 import axios from 'axios';
+// + Moment
+import moment from 'moment';
 // + Environment Variables
 import env from 'react-dotenv';
 
@@ -49,4 +51,58 @@ export const getForecast = {
       throw error;
     }
   },
+};
+
+const WEATHER_ICONS_MAP = {
+  // -- Group 2xx: Thunderstorm
+  Thunderstorm: {
+    211: '/assets/weather-icons/thunder.svg', // Thunderstorm without Rain
+    default: '/assets/weather-icons/thunder.svg',
+  },
+  // -- Group 3xx: Drizzle
+  Drizzle: {
+    default: '/assets/weather-icons/day-rain.svg',
+  },
+  // -- Group 5xx: Rain
+  Rain: {
+    default: '/assets/weather-icons/hail.svg',
+  },
+  // -- Group 6xx: Snow
+  Snow: {
+    default: '/assets/weather-icons/day-snow.svg',
+  },
+  // -- Group 7xx: Atmosphere
+  Atmosphere: {
+    default: null,
+  },
+  // -- Group 800: Clear
+  Clear: {
+    800: {
+      // Clear
+      day: '/assets/weather-icons/day.svg',
+      night: '/assets/weather-icons/night.svg',
+    },
+    default: '/assets/weather-icons/day.svg',
+  },
+  // -- Group 80x: Clouds
+  Clouds: {
+    801: {
+      // Few clouds
+      day: '/assets/weather-icons/day-cloudy.svg',
+      night: '/assets/weather-icons/night-cloudy.svg',
+    },
+    default: '/assets/weather-icons/cloudy.svg',
+  },
+};
+
+export const getWeatherConditionIcon = (condition, code, time) => {
+  const timeOfTheDay =
+    6 <= moment(time).hours() && moment(time).hours() <= 19 ? 'day' : 'night';
+
+  const iconLink = WEATHER_ICONS_MAP[condition][code]
+    ? WEATHER_ICONS_MAP[condition][code][timeOfTheDay]
+    : WEATHER_ICONS_MAP[condition][code] ??
+      WEATHER_ICONS_MAP[condition].default;
+
+  return iconLink;
 };

@@ -18,6 +18,7 @@ import moment from 'moment';
 // * Config
 // + Utils
 import { convertFarenheitToCelcius } from '../../utils/functions.utils';
+import { getWeatherConditionIcon } from '../../API/open-weather/open-weather.api';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -88,7 +89,11 @@ const WeatherTimeline = ({ data, className, ...otherProps }) => {
       <CardMedia
         className={classes.cardMedia}
         alt='img'
-        image='/assets/weather-icons/day-cloudy.svg'
+        image={getWeatherConditionIcon(
+          data.weather[0].main,
+          data.weather[0].id,
+          data.dt_txt
+        )}
       />
       {/* Card Body */}
       <CardContent className={classes.cardContent}>

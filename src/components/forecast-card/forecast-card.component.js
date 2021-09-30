@@ -35,7 +35,10 @@ import {
   convertFarenheitToCelcius,
   getRandomNumber,
 } from '../../utils/functions.utils';
-import { getForecast } from '../../API/open-weather/open-weather.api';
+import {
+  getForecast,
+  getWeatherConditionIcon,
+} from '../../API/open-weather/open-weather.api';
 
 // -- Material-UI Styles
 const useStyles = makeStyles(theme => ({
@@ -161,13 +164,14 @@ const ForecastCard = ({ address }) => {
   const [cardBgUrl, setCardBgUrl] = React.useState('');
   const [isFavorite, setIsFavorite] = React.useState(false);
   const todayForecast = React.useRef(undefined);
-  
+
   // ! Important: remember passing Object as props for useStyles
   const classes = useStyles({ cardBgUrl }); // Passing the url to Material Styles
-  
+
   useEffect(() => {
     // Gets data from Open Weather API using a City as the query
     getForecast.fiveDaysThreeHours.byCity(address.city).then(data => {
+      // Get today or tomorrow forecast at noon
       todayForecast.current =
         data.results.list.filter(
           data =>
@@ -249,7 +253,9 @@ const ForecastCard = ({ address }) => {
               component: 'h3',
               className: classes.cardTitle,
             }}
-            subheader={moment(todayForecast.current.dt_txt).format('DD/MM/YYYY')}
+            subheader={moment(todayForecast.current.dt_txt).format(
+              'DD/MM/YYYY'
+            )}
             subheaderTypographyProps={{
               variant: 'subtitle2',
               className: classes.cardSubtitle,
@@ -314,7 +320,11 @@ const ForecastCard = ({ address }) => {
                 }}
               >
                 <img
-                  src='/assets/weather-icons/day-cloudy.svg'
+                  src={getWeatherConditionIcon(
+                    todayForecast.current.weather[0].main,
+                    todayForecast.current.weather[0].id,
+                    todayForecast.current.dt_txt
+                  )}
                   height='150px'
                   width='150px'
                   alt='weather icon'
@@ -335,11 +345,14 @@ const ForecastCard = ({ address }) => {
               className={classes.moreDataRightSide}
             >
               <Typography align='justify' variant='body2' noWrap>
-                {Math.round(convertFarenheitToCelcius(todayForecast.current.main.temp))}
+                {Math.round(
+                  convertFarenheitToCelcius(todayForecast.current.main.temp)
+                )}
                 ℃ | {Math.round(todayForecast.current.main.temp)}℉
               </Typography>
               <Typography align='justify' variant='body2' noWrap>
-                Feels like: {Math.round(todayForecast.current.main.feels_like)}°F
+                Feels like: {Math.round(todayForecast.current.main.feels_like)}
+                °F
               </Typography>
               <Typography align='justify' variant='body2' noWrap>
                 Wind: {todayForecast.current.wind.speed} mph
