@@ -3,9 +3,9 @@ export const addAddressToAddresses = (addresses, addressToAdd) => {
     address => address.city === addressToAdd.city
   );
 
-  if (!existingAddress) {
-    return [...addresses, addressToAdd];
+  if (existingAddress) {
+    return addresses;
   }
 
-  return [...addresses];
+  return [...addresses, addressToAdd];
 };
