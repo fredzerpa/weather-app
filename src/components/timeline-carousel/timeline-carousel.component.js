@@ -1,8 +1,6 @@
 import React from 'react';
 
 // * Libraries
-// + React Prototypes
-import PropTypes from 'prop-types';
 // + Swiper Carousel
 import { Swiper, SwiperSlide } from 'swiper/react';
 // + Material-UI
@@ -66,11 +64,6 @@ const TimelineCarousel = ({
       ))}
     </Swiper>
   );
-};
-
-TimelineCarousel.protoTypes = {
-  children: PropTypes.element.isRequired,
-  height: PropTypes.number.isRequired,
 };
 
 export default TimelineCarousel;
