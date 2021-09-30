@@ -43,7 +43,7 @@ const App = () => {
         className={classes.githubCorner}
         bannerColor='#fff'
         octoColor='#000'
-        href={process.env.REACT_APP_GITHUB_ACCOUNT}
+        href={process.env.REACT_APP_GITHUB_REPO}
       />
       <Footer />
     </Grid>
