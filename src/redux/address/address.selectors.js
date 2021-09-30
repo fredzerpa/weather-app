@@ -1,8 +1,13 @@
 import { createSelector } from 'reselect';
 
-const selectAddress = state => state.address;
+const selectAddresses = state => state.addresses;
 
-export const selectAddresses = createSelector(
-  [selectAddress],
-  address => address.addresses
+export const selectSearchedAddresses = createSelector(
+  [selectAddresses],
+  addresses => addresses.searchedAddresses
 );
+
+export const selectFavoriteAddresses = createSelector(
+  [selectAddresses],
+  addresses => addresses.favorites
+)

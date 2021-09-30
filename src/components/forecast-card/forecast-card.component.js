@@ -39,6 +39,11 @@ import {
   getForecast,
   getWeatherConditionIcon,
 } from '../../API/open-weather/open-weather.api';
+import { connect } from 'react-redux';
+import {
+  addAddressToFavorites,
+  removeAddressFromFavorites,
+} from '../../redux/address/address.actions';
 
 // -- Material-UI Styles
 const useStyles = makeStyles(theme => ({
@@ -158,15 +163,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ForecastCard = ({ address }) => {
+const ForecastCard = ({
+  address,
+  favorite=false,
+  addAddressToFavorites,
+  removeAddressFromFavorites,
+}) => {
   const [forecast, setForecast] = React.useState(undefined);
   const [expanded, setExpanded] = React.useState(true);
   const [cardBgUrl, setCardBgUrl] = React.useState('');
-  const [isFavorite, setIsFavorite] = React.useState(false);
+  const [isFavorite, setIsFavorite] = React.useState(favorite);
   const todayForecast = React.useRef(undefined);
 
   // ! Important: remember passing Object as props for useStyles
   const classes = useStyles({ cardBgUrl }); // Passing the url to Material Styles
+
+  console.log('render', isFavorite)
 
   useEffect(() => {
     // Gets data from Open Weather API using a City as the query
@@ -217,6 +229,12 @@ const ForecastCard = ({ address }) => {
 
   const handleFavoriteClick = () => {
     setIsFavorite(!isFavorite);
+
+    if (!isFavorite) {
+      addAddressToFavorites(address);
+    } else {
+      removeAddressFromFavorites(address);
+    }
   };
 
   // const fullDate = new Date(data.dt_txt);
@@ -375,4 +393,10 @@ const ForecastCard = ({ address }) => {
   ) : null;
 };
 
-export default React.memo(ForecastCard);
+const mapDispatchToProps = dispatch => ({
+  addAddressToFavorites: address => dispatch(addAddressToFavorites(address)),
+  removeAddressFromFavorites: address =>
+    dispatch(removeAddressFromFavorites(address)),
+});
+
+export default React.memo(connect(null, mapDispatchToProps)(ForecastCard));

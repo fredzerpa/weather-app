@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 // + Reselect
 import { createStructuredSelector } from 'reselect';
 import {
+  selectFavoriteAddresses,
   selectSearchedAddresses,
 } from '../../redux/address/address.selectors';
 
@@ -23,10 +24,10 @@ const useStyles = makeStyles({
   },
 });
 
-const ForecastCardsOverview = ({ searchedAddresses }) => {
+const ForecastCardsOverview = ({ searchedAddresses, favoriteAddresses }) => {
   const classes = useStyles();
 
-  return searchedAddresses.length ? (
+  return (
     <Grid
       container
       spacing={2}
@@ -34,26 +35,45 @@ const ForecastCardsOverview = ({ searchedAddresses }) => {
       alignItems='center'
       className={classes.container}
     >
-      {/* Wrapper for the Cards. Should use one per Card  */}
-      {searchedAddresses.map((address, idx) => (
-        <Grid
-          key={address.place_id ?? idx}
-          container
-          item
-          xs={12}
-          md={6}
-          lg={5}
-          justifyContent='center'
-        >
-          <ForecastCard address={address} />
-        </Grid>
-      ))}
+      {favoriteAddresses.length
+        ? favoriteAddresses.map((address, idx) => (
+            // Wrapper for the Cards. Should use one per Card
+            <Grid
+              key={address.place_id ?? idx}
+              container
+              item
+              xs={12}
+              md={6}
+              lg={5}
+              justifyContent='center'
+            >
+              <ForecastCard address={address} favorite/>
+            </Grid>
+          ))
+        : null}
+      {searchedAddresses.length
+        ? searchedAddresses.map((address, idx) => (
+            // Wrapper for the Cards. Should use one per Card
+            <Grid
+              key={address.place_id ?? idx}
+              container
+              item
+              xs={12}
+              md={6}
+              lg={5}
+              justifyContent='center'
+            >
+              <ForecastCard address={address} />
+            </Grid>
+          ))
+        : null}
     </Grid>
-  ) : null;
+  );
 };
 
 const mapStateToProps = createStructuredSelector({
   searchedAddresses: selectSearchedAddresses,
+  favoriteAddresses: selectFavoriteAddresses,
 });
 
 export default connect(mapStateToProps)(ForecastCardsOverview);
