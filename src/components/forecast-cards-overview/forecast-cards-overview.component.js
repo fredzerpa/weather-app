@@ -5,11 +5,14 @@ import React from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
 // + React~Redux
 import { connect } from 'react-redux';
+// + Reselect
+import { createStructuredSelector } from 'reselect';
+import {
+  selectSearchedAddresses,
+} from '../../redux/address/address.selectors';
 
 // * Components
 import ForecastCard from '../forecast-card/forecast-card.component';
-import { selectAddresses } from '../../redux/address/address.selectors';
-import { createStructuredSelector } from 'reselect';
 
 // -- Material-UI Styles
 const useStyles = makeStyles({
@@ -20,52 +23,10 @@ const useStyles = makeStyles({
   },
 });
 
-// const WEATHER_ICONS_MATCH = {
-//   // -- Group 2xx: Thunderstorm
-//   Thunderstorm: {
-//     211: null, // Thunderstorm without Rain
-//     default: null,
-//   },
-//   // -- Group 3xx: Drizzle
-//   Drizzle: {
-//     default: null,
-//   },
-//   // -- Group 5xx: Rain
-//   Rain: {
-//     default: null,
-//   },
-//   // -- Group 6xx: Snow
-//   Snow: {
-//     default: null,
-//   },
-//   // -- Group 7xx: Atmosphere
-//   Atmosphere: {
-//     default: null,
-//   },
-//   // -- Group 800: Clear
-//   Clear: {
-//     800: {
-//       // Clear
-//       day: null,
-//       night: null,
-//     },
-//     default: null,
-//   },
-//   // -- Group 80x: Clouds
-//   Clouds: {
-//     801: {
-//       // Few clouds
-//       day: null,
-//       night: null,
-//     },
-//     default: null,
-//   },
-// };
-
-const ForecastCardsOverview = ({ addresses }) => {
+const ForecastCardsOverview = ({ searchedAddresses }) => {
   const classes = useStyles();
 
-  return addresses.length ? (
+  return searchedAddresses.length ? (
     <Grid
       container
       spacing={2}
@@ -74,7 +35,7 @@ const ForecastCardsOverview = ({ addresses }) => {
       className={classes.container}
     >
       {/* Wrapper for the Cards. Should use one per Card  */}
-      {addresses.map((address, idx) => (
+      {searchedAddresses.map((address, idx) => (
         <Grid
           key={address.place_id ?? idx}
           container
@@ -92,7 +53,7 @@ const ForecastCardsOverview = ({ addresses }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  addresses: selectAddresses,
+  searchedAddresses: selectSearchedAddresses,
 });
 
 export default connect(mapStateToProps)(ForecastCardsOverview);

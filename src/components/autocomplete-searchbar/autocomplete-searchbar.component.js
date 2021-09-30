@@ -15,7 +15,7 @@ import axios from 'axios';
 
 // + Redux
 import { connect } from 'react-redux';
-import { addAddress } from '../../redux/address/address.actions';
+import { addAddressToSearchedAddresses } from '../../redux/address/address.actions';
 
 // * Components
 // + API
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AutocompleteSearchbar = ({ addAddress }) => {
+const AutocompleteSearchbar = ({ addAddressToSearchedAddresses }) => {
   // Data from API
   const value = null;
   // Data from Input
@@ -115,7 +115,7 @@ const AutocompleteSearchbar = ({ addAddress }) => {
       filterSelectedOptions
       onChange={(event, newAddress) => {
         setOptions(newAddress ? [newAddress, ...options] : options);
-        addAddress(newAddress);
+        addAddressToSearchedAddresses(newAddress);
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
@@ -173,7 +173,8 @@ const AutocompleteSearchbar = ({ addAddress }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  addAddress: data => dispatch(addAddress(data)),
+  addAddressToSearchedAddresses: data =>
+    dispatch(addAddressToSearchedAddresses(data)),
 });
 
 export default connect(null, mapDispatchToProps)(AutocompleteSearchbar);

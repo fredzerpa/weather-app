@@ -18,7 +18,7 @@ import axios from 'axios';
 
 // + Redux
 import { connect } from 'react-redux';
-import { addAddress } from '../../redux/address/address.actions';
+import { addAddressToSearchedAddresses } from '../../redux/address/address.actions';
 
 const useStyles = makeStyles({
   searchbar: {
@@ -67,7 +67,7 @@ const getUserGeoLocation = async () => {
   return await axios.get('https://ipapi.co/json');
 };
 
-const SearchBar = ({ addAddress, ...props }) => {
+const SearchBar = ({ addAddressToSearchedAddresses, ...props }) => {
   const classes = useStyles();
 
   return (
@@ -103,7 +103,9 @@ const SearchBar = ({ addAddress, ...props }) => {
               {/* Location Icon */}
               <IconButton
                 onClick={() =>
-                  getUserGeoLocation().then(({ data }) => addAddress(data))
+                  getUserGeoLocation().then(({ data }) =>
+                    addAddressToSearchedAddresses(data)
+                  )
                 }
               >
                 <LocationOn className={classes.locationIcon} />
@@ -117,7 +119,8 @@ const SearchBar = ({ addAddress, ...props }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  addAddress: data => dispatch(addAddress(data)),
+  addAddressToSearchedAddresses: data =>
+    dispatch(addAddressToSearchedAddresses(data)),
 });
 
 export default React.memo(connect(null, mapDispatchToProps)(SearchBar));
