@@ -41,6 +41,16 @@ const addressReducer = (state = INITIAL_STATE, action) => {
         favorites: removeExistingAddress(state.favorites, action.payload),
       };
 
+    case AddressActionTypes.REMOVE_ADDRESS:
+      return {
+        ...state,
+        searchedAddresses: removeExistingAddress(
+          state.searchedAddresses,
+          action.payload
+        ),
+        favorites: removeExistingAddress(state.favorites, action.payload),
+      };
+
     default:
       return state;
   }

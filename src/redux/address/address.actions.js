@@ -14,3 +14,8 @@ export const removeAddressFromFavorites = address => ({
   type: AddressActionTypes.REMOVE_ADDRESS_FROM_FAVORITES,
   payload: address,
 });
+
+export const removeAddress = address => ({
+  type: AddressActionTypes.REMOVE_ADDRESS,
+  payload: address,
+});

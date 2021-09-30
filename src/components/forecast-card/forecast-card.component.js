@@ -16,7 +16,12 @@ import {
   CardActions,
 } from '@material-ui/core'; // Material-UI v4
 // + Material-UI Icons
-import { ExpandMore, Favorite, FavoriteBorder } from '@material-ui/icons';
+import {
+  Close,
+  ExpandMore,
+  Favorite,
+  FavoriteBorder,
+} from '@material-ui/icons';
 // + CLSX for Classes Construct
 import clsx from 'clsx';
 // + MomentJs
@@ -42,6 +47,7 @@ import {
 import { connect } from 'react-redux';
 import {
   addAddressToFavorites,
+  removeAddress,
   removeAddressFromFavorites,
 } from '../../redux/address/address.actions';
 
@@ -89,10 +95,23 @@ const useStyles = makeStyles(theme => ({
   cardSubtitle: {
     color: '#d6dbdc',
   },
+  cardHeaderAction: {
+    height: '100%',
+    marginRight: '-5px',
+  },
   favoriteButton: {
     transition: theme.transitions.create('transform', {
-      // duration: theme.transitions.duration,
+      duration: theme.transitions.duration,
     }),
+
+    padding: '8px',
+  },
+  closeButton: {
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration,
+    }),
+
+    padding: '8px',
   },
   cardContent: {},
   cardActions: {
@@ -165,9 +184,10 @@ const useStyles = makeStyles(theme => ({
 
 const ForecastCard = ({
   address,
-  favorite=false,
+  favorite = false,
   addAddressToFavorites,
   removeAddressFromFavorites,
+  removeAddress,
 }) => {
   const [forecast, setForecast] = React.useState(undefined);
   const [expanded, setExpanded] = React.useState(true);
@@ -178,7 +198,7 @@ const ForecastCard = ({
   // ! Important: remember passing Object as props for useStyles
   const classes = useStyles({ cardBgUrl }); // Passing the url to Material Styles
 
-  console.log('render', isFavorite)
+  console.log('render', isFavorite);
 
   useEffect(() => {
     // Gets data from Open Weather API using a City as the query
@@ -252,18 +272,36 @@ const ForecastCard = ({
           <div className={classes.cardOverlay}></div>
           {/* Header */}
           <CardHeader
+            classes={{
+              action: classes.cardHeaderAction,
+            }}
             action={
-              <IconButton
-                aria-label='Toggle from favorite'
-                onClick={handleFavoriteClick}
-                className={classes.favoriteButton}
+              <Grid
+                container
+                justifyContent='center'
+                // alignItems='flex-start'
+                direction='column'
+                wrap='nowrap'
               >
-                {isFavorite ? (
-                  <Favorite style={{ color: 'white' }} />
-                ) : (
-                  <FavoriteBorder style={{ color: 'white' }} />
-                )}
-              </IconButton>
+                <IconButton
+                  aria-label='Toggle from favorite'
+                  onClick={handleFavoriteClick}
+                  className={classes.favoriteButton}
+                >
+                  {isFavorite ? (
+                    <Favorite style={{ color: 'white' }} />
+                  ) : (
+                    <FavoriteBorder style={{ color: 'white' }} />
+                  )}
+                </IconButton>
+                <IconButton
+                  aria-label='Toggle from favorite'
+                  onClick={() => removeAddress(address)}
+                  className={classes.closeButton}
+                >
+                  <Close style={{ color: 'white' }} />
+                </IconButton>
+              </Grid>
             }
             title={todayForecast.current.weather[0].main}
             titleTypographyProps={{
@@ -397,6 +435,7 @@ const mapDispatchToProps = dispatch => ({
   addAddressToFavorites: address => dispatch(addAddressToFavorites(address)),
   removeAddressFromFavorites: address =>
     dispatch(removeAddressFromFavorites(address)),
+  removeAddress: address => dispatch(removeAddress(address)),
 });
 
 export default React.memo(connect(null, mapDispatchToProps)(ForecastCard));
