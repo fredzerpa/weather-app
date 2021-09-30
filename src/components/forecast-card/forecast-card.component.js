@@ -35,6 +35,7 @@ import {
   convertFarenheitToCelcius,
   getRandomNumber,
 } from '../../utils/functions.utils';
+import { getForecast } from '../../API/open-weather/open-weather.api';
 
 // -- Material-UI Styles
 const useStyles = makeStyles(theme => ({
@@ -154,57 +155,58 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
-
-const ForecastCard = ({ forecast, addressData, icon }) => {
+const ForecastCard = ({ address }) => {
+  const [forecast, setForecast] = React.useState(undefined);
   const [expanded, setExpanded] = React.useState(true);
   const [cardBgUrl, setCardBgUrl] = React.useState('');
   const [isFavorite, setIsFavorite] = React.useState(false);
-
+  const todayForecast = React.useRef(undefined);
+  
   // ! Important: remember passing Object as props for useStyles
   const classes = useStyles({ cardBgUrl }); // Passing the url to Material Styles
 
-  // -- Variables
-  const todayForecast =
-    forecast.results.list.filter(
-      data =>
-        moment(data.dt_txt).calendar(null, {
-          sameDay: '[Today]',
-          nextDay: '[Tomorrow]',
-          nextWeek: 'dddd',
-          lastDay: '[Yesterday]',
-          lastWeek: '[Last] dddd',
-          sameElse: 'DD/MM/YYYY',
-        }) === 'Today' && moment(data.dt_txt).get('hour') === 12
-    )[0] ??
-    forecast.results.list.filter(
-      data =>
-        moment(data.dt_txt).calendar(null, {
-          sameDay: '[Today]',
-          nextDay: '[Tomorrow]',
-          nextWeek: 'dddd',
-          lastDay: '[Yesterday]',
-          lastWeek: '[Last] dddd',
-          sameElse: 'DD/MM/YYYY',
-        }) === 'Tomorrow' && moment(data.dt_txt).get('hour') === 12
-    )[0];
-
-  console.log(todayForecast);
-
+  console.log({address, todayForecast})
+  
   useEffect(() => {
+    // Gets data from Open Weather API using a City as the query
+    getForecast.fiveDaysThreeHours.byCity(address.city).then(data => {
+      todayForecast.current =
+        data.results.list.filter(
+          data =>
+            moment(data.dt_txt).calendar(null, {
+              sameDay: '[Today]',
+              nextDay: '[Tomorrow]',
+              nextWeek: 'dddd',
+              lastDay: '[Yesterday]',
+              lastWeek: '[Last] dddd',
+              sameElse: 'DD/MM/YYYY',
+            }) === 'Today' && moment(data.dt_txt).get('hour') === 12
+        )[0] ??
+        data.results.list.filter(
+          data =>
+            moment(data.dt_txt).calendar(null, {
+              sameDay: '[Today]',
+              nextDay: '[Tomorrow]',
+              nextWeek: 'dddd',
+              lastDay: '[Yesterday]',
+              lastWeek: '[Last] dddd',
+              sameElse: 'DD/MM/YYYY',
+            }) === 'Tomorrow' && moment(data.dt_txt).get('hour') === 12
+        )[0];
+      setForecast(data);
+    });
+
     // Gets data from Unsplash API using a City as the query
-    searchPhotosByKeyword(addressData.city, {
+    searchPhotosByKeyword(address.city, {
       backupSearch: true,
       backupKeyword:
-        addressData.country.length > 3
-          ? addressData.country
-          : addressData.country_name,
+        address.country.length > 3 ? address.country : address.country_name,
     }).then(({ response: { data } }) => {
       const imageUrls =
         data.results[getRandomNumber(data.results.length)]?.urls;
       setCardBgUrl(imageUrls?.small);
     });
-  }, [addressData]);
+  }, [address]);
 
   // -- Click Handlers
   const handleExpandClick = () => {
@@ -216,7 +218,7 @@ const ForecastCard = ({ forecast, addressData, icon }) => {
   };
 
   // const fullDate = new Date(data.dt_txt);
-  return (
+  return forecast && todayForecast ? (
     <Grid
       wrap='nowrap'
       container
@@ -243,13 +245,13 @@ const ForecastCard = ({ forecast, addressData, icon }) => {
                 )}
               </IconButton>
             }
-            title={todayForecast.weather[0].main}
+            title={todayForecast.current.weather[0].main}
             titleTypographyProps={{
               variant: 'h2',
               component: 'h3',
               className: classes.cardTitle,
             }}
-            subheader={moment(todayForecast.dt_txt).format('DD/MM/YYYY')}
+            subheader={moment(todayForecast.current.dt_txt).format('DD/MM/YYYY')}
             subheaderTypographyProps={{
               variant: 'subtitle2',
               className: classes.cardSubtitle,
@@ -266,8 +268,8 @@ const ForecastCard = ({ forecast, addressData, icon }) => {
               noWrap
               align='left'
             >
-              {capitalizeFirstLetter(addressData.city.toLowerCase())},{' '}
-              {capitalizeFirstLetter(addressData.country_code.toLowerCase())}
+              {capitalizeFirstLetter(address.city.toLowerCase())},{' '}
+              {capitalizeFirstLetter(address.country_code.toLowerCase())}
             </Typography>
             <IconButton
               className={`${clsx(classes.expand, {
@@ -335,17 +337,17 @@ const ForecastCard = ({ forecast, addressData, icon }) => {
               className={classes.moreDataRightSide}
             >
               <Typography align='justify' variant='body2' noWrap>
-                {Math.round(convertFarenheitToCelcius(todayForecast.main.temp))}
-                ℃ | {Math.round(todayForecast.main.temp)}℉
+                {Math.round(convertFarenheitToCelcius(todayForecast.current.main.temp))}
+                ℃ | {Math.round(todayForecast.current.main.temp)}℉
               </Typography>
               <Typography align='justify' variant='body2' noWrap>
-                Feels like: {Math.round(todayForecast.main.feels_like)}°F
+                Feels like: {Math.round(todayForecast.current.main.feels_like)}°F
               </Typography>
               <Typography align='justify' variant='body2' noWrap>
-                Wind: {todayForecast.wind.speed} mph
+                Wind: {todayForecast.current.wind.speed} mph
               </Typography>
               <Typography align='justify' variant='body2' noWrap>
-                Humidity: {todayForecast.main.humidity}%
+                Humidity: {todayForecast.current.main.humidity}%
               </Typography>
             </Grid>
           </Grid>
@@ -359,7 +361,7 @@ const ForecastCard = ({ forecast, addressData, icon }) => {
         </Paper>
       </Collapse>
     </Grid>
-  );
+  ) : null;
 };
 
-export default ForecastCard;
+export default React.memo(ForecastCard);

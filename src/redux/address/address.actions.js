@@ -1,6 +1,6 @@
 import AddressActionTypes from './address.types';
 
-export const setAddress = address => ({
-  type: AddressActionTypes.SET_ADDRESS,
+export const addAddress = address => ({
+  type: AddressActionTypes.ADD_ADDRESS,
   payload: address,
 });

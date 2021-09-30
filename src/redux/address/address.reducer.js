@@ -1,15 +1,16 @@
 import AddressActionTypes from './address.types';
+import { addAddressToAddresses } from './address.utils';
 
 const INITIAL_STATE = {
-  addressData: null,
+  addresses: [],
 };
 
 const addressReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case AddressActionTypes.SET_ADDRESS:
+    case AddressActionTypes.ADD_ADDRESS:
       return {
         ...state,
-        addressData: action.payload,
+        addresses: addAddressToAddresses(state.addresses, action.payload),
       };
 
     default:

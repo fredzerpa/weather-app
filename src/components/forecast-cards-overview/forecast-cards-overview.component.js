@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 // * Libraries
 // + Material-UI
@@ -8,10 +8,8 @@ import { connect } from 'react-redux';
 
 // * Components
 import ForecastCard from '../forecast-card/forecast-card.component';
-
-// * Utils
-// + API
-import { getForecast } from '../../API/open-weather/open-weather.api';
+import { selectAddresses } from '../../redux/address/address.selectors';
+import { createStructuredSelector } from 'reselect';
 
 // -- Material-UI Styles
 const useStyles = makeStyles({
@@ -64,16 +62,10 @@ const useStyles = makeStyles({
 //   },
 // };
 
-const ForecastCardsOverview = ({ addressData }) => {
+const ForecastCardsOverview = ({ addresses }) => {
   const classes = useStyles();
-  const [forecast, setForecast] = React.useState(null);
 
-  console.log({ forecast });
-  useEffect(() => {
-    // Gets data from Open Weather API using a City as the query
-    // getForecast.fiveDaysThreeHours.byCity(addressData.city).then(setForecast);
-  }, [addressData]);
-  return forecast ? (
+  return addresses.length ? (
     <Grid
       container
       spacing={2}
@@ -82,21 +74,25 @@ const ForecastCardsOverview = ({ addressData }) => {
       className={classes.container}
     >
       {/* Wrapper for the Cards. Should use one per Card  */}
-      {/* <Grid container item xs={12} md={6} lg={5} justifyContent='center'>
-        <ForecastCard forecast={forecast} addressData={addressData} />
-      </Grid>
-      <Grid container item xs={12} md={6} lg={5} justifyContent='center'>
-        <ForecastCard forecast={forecast} addressData={addressData} />
-      </Grid>
-      <Grid container item xs={12} md={6} lg={5} justifyContent='center'>
-        <ForecastCard forecast={forecast} addressData={addressData} />
-      </Grid> */}
+      {addresses.map((address, idx) => (
+        <Grid
+          key={address.place_id ?? idx}
+          container
+          item
+          xs={12}
+          md={6}
+          lg={5}
+          justifyContent='center'
+        >
+          <ForecastCard address={address} />
+        </Grid>
+      ))}
     </Grid>
   ) : null;
 };
 
-const mapStateToProps = state => ({
-  addressData: state.address.addressData,
+const mapStateToProps = createStructuredSelector({
+  addresses: selectAddresses,
 });
 
 export default connect(mapStateToProps)(ForecastCardsOverview);

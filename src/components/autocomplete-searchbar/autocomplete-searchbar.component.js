@@ -12,6 +12,11 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 // + Axios
 import axios from 'axios';
+
+// + Redux
+import { connect } from 'react-redux';
+import { addAddress } from '../../redux/address/address.actions';
+
 // * Components
 // + API
 import { autocompleteAddress } from '../../API/geoapify/geoapify.api';
@@ -32,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AutocompleteSearchbar = ({ setAddressData }) => {
+const AutocompleteSearchbar = ({ addAddress }) => {
   // Data from API
   const value = null;
   // Data from Input
@@ -107,9 +112,10 @@ const AutocompleteSearchbar = ({ setAddressData }) => {
       popupIcon={null}
       open={open}
       value={value}
+      filterSelectedOptions
       onChange={(event, newAddress) => {
         setOptions(newAddress ? [newAddress, ...options] : options);
-        setAddressData(newAddress);
+        addAddress(newAddress);
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
@@ -130,9 +136,7 @@ const AutocompleteSearchbar = ({ setAddressData }) => {
       classes={{
         paper: classes.optionsWrapper,
       }}
-      renderInput={params => (
-        <SearchBar {...params} setAddressData={setAddressData} />
-      )}
+      renderInput={params => <SearchBar {...params} />}
       renderOption={option => {
         const optionCustomAddress =
           option.city +
@@ -168,4 +172,8 @@ const AutocompleteSearchbar = ({ setAddressData }) => {
   );
 };
 
-export default AutocompleteSearchbar;
+const mapDispatchToProps = dispatch => ({
+  addAddress: data => dispatch(addAddress(data)),
+});
+
+export default connect(null, mapDispatchToProps)(AutocompleteSearchbar);

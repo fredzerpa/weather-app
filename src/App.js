@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // CSS
 import './App.css';
@@ -28,13 +28,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const App = () => {
-  const [addressData, setAddressData] = useState(null);
-
   // -- Material Style
   const classes = useStyles();
-
-  console.log({ addressData });
-
   return (
     <Grid
       className={classes.root}
@@ -42,7 +37,7 @@ const App = () => {
       direction='column'
       justifyContent='center'
     >
-      <Header setAddressData={setAddressData} />
+      <Header />
       <ForecastCardsOverview />
       <GithubCorner
         className={classes.githubCorner}

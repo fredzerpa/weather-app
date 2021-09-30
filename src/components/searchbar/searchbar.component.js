@@ -16,6 +16,10 @@ import { SearchOutlined, LocationOn } from '@material-ui/icons';
 // + Axios
 import axios from 'axios';
 
+// + Redux
+import { connect } from 'react-redux';
+import { addAddress } from '../../redux/address/address.actions';
+
 const useStyles = makeStyles({
   searchbar: {
     padding: '1rem 0',
@@ -63,7 +67,7 @@ const getUserGeoLocation = async () => {
   return await axios.get('https://ipapi.co/json');
 };
 
-const SearchBar = ({ setAddressData, ...props }) => {
+const SearchBar = ({ addAddress, ...props }) => {
   const classes = useStyles();
 
   return (
@@ -99,7 +103,7 @@ const SearchBar = ({ setAddressData, ...props }) => {
               {/* Location Icon */}
               <IconButton
                 onClick={() =>
-                  getUserGeoLocation().then(({ data }) => setAddressData(data))
+                  getUserGeoLocation().then(({ data }) => addAddress(data))
                 }
               >
                 <LocationOn className={classes.locationIcon} />
@@ -112,4 +116,8 @@ const SearchBar = ({ setAddressData, ...props }) => {
   );
 };
 
-export default SearchBar;
+const mapDispatchToProps = dispatch => ({
+  addAddress: data => dispatch(addAddress(data)),
+});
+
+export default React.memo(connect(null, mapDispatchToProps)(SearchBar));
