@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+# React Weather App 🌤
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple weather app that allows you to get current weather information, based on the city you are.
 
-## Available Scripts
+## Cloning this repo
 
-In the project directory, you can run:
+```cmd
+git clone https://github.com/fredzerpa/weather-app.git
+cd react-weather-app
+yarn
+yarn start
+```
 
-### `yarn start`
+### `Enviroment Variables`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Create a `.env` file and add the keys
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```txt
+WEATHER_API_KEY
+REACT_APP_GITHUB_ACCOUNT
+REACT_APP_GITHUB_REPO
+UNSPLASH_ACCESS_KEY
+GEOAPIFY_API_KEY
+```
 
-### `yarn test`
+REMEMBER TO USE YOUR _`OWN`_ KEYS
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technologies
 
-### `yarn build`
+- [React](https://reactjs.org/)
+- [Redux](https://react-redux.js.org/)
+- [Redux-Logger](https://github.com/LogRocket/redux-logger)
+- [Redux-Persist](https://github.com/rt2zz/redux-persist)
+- [Material-UI](https://mui.com/)
+- [clsx](https://github.com/lukeed/clsx)
+- [Moment.js](https://momentjs.com/)
+- [dotenv](https://www.npmjs.com/package/react-dotenvv)
+- [Reselect](https://github.com/reduxjs/reselect)
+- [Swiper](https://swiperjs.com/)
+- [Github Corner](https://github.com/tholman/github-corners)
+- [Autosuggest Highlight](https://github.com/moroshko/autosuggest-highlight)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## API
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [Open Weather](https://openweathermap.org/)
+  Used to get the Hourly Forecast for the next 4 days.
+- [Unsplash](https://unsplash.com/developers)
+  Used to get the Cards background images.
+- [Geoapify](https://www.geoapify.com/)
+  Used to get the suggestion for the Cities on the Search Bar.
