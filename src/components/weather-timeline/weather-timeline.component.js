@@ -89,11 +89,11 @@ const WeatherTimeline = ({ data, className, ...otherProps }) => {
       <CardMedia
         className={classes.cardMedia}
         alt='img'
-        image={`${window.location.href}${getWeatherConditionIcon(
+        image={getWeatherConditionIcon(
           data.weather[0].main,
           data.weather[0].id,
           data.dt_txt
-        )}`}
+        )}
       />
       {/* Card Body */}
       <CardContent className={classes.cardContent}>

@@ -56,20 +56,20 @@ export const getForecast = {
 const WEATHER_ICONS_MAP = {
   // -- Group 2xx: Thunderstorm
   Thunderstorm: {
-    211: 'assets/weather-icons/thunder.svg', // Thunderstorm without Rain
-    default: 'assets/weather-icons/thunder.svg',
+    211: '/assets/weather-icons/thunder.svg', // Thunderstorm without Rain
+    default: '/assets/weather-icons/thunder.svg',
   },
   // -- Group 3xx: Drizzle
   Drizzle: {
-    default: 'assets/weather-icons/day-rain.svg',
+    default: '/assets/weather-icons/day-rain.svg',
   },
   // -- Group 5xx: Rain
   Rain: {
-    default: 'assets/weather-icons/hail.svg',
+    default: '/assets/weather-icons/hail.svg',
   },
   // -- Group 6xx: Snow
   Snow: {
-    default: 'assets/weather-icons/day-snow.svg',
+    default: '/assets/weather-icons/day-snow.svg',
   },
   // -- Group 7xx: Atmosphere
   Atmosphere: {
@@ -79,19 +79,19 @@ const WEATHER_ICONS_MAP = {
   Clear: {
     800: {
       // Clear
-      day: 'assets/weather-icons/day.svg',
-      night: 'assets/weather-icons/night.svg',
+      day: '/assets/weather-icons/day.svg',
+      night: '/assets/weather-icons/night.svg',
     },
-    default: 'assets/weather-icons/day.svg',
+    default: '/assets/weather-icons/day.svg',
   },
   // -- Group 80x: Clouds
   Clouds: {
     801: {
       // Few clouds
-      day: 'assets/weather-icons/day-cloudy.svg',
-      night: 'assets/weather-icons/night-cloudy.svg',
+      day: '/assets/weather-icons/day-cloudy.svg',
+      night: '/assets/weather-icons/night-cloudy.svg',
     },
-    default: 'assets/weather-icons/cloudy.svg',
+    default: '/assets/weather-icons/cloudy.svg',
   },
 };
 
