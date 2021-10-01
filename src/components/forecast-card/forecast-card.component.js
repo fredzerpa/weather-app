@@ -366,7 +366,7 @@ const ForecastCard = ({
                 }}
               >
                 <img
-                  src={`${window.location.origin}${getWeatherConditionIcon(
+                  src={`${window.location.href}${getWeatherConditionIcon(
                     todayForecast.current.weather[0].main,
                     todayForecast.current.weather[0].id,
                     todayForecast.current.dt_txt
