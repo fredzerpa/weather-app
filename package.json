@@ -1,4 +1,5 @@
 {
+  "homepage": "http://fredzerpa.github.io/weather-app",
   "name": "weather-app",
   "version": "1.0.0",
   "private": true,
@@ -30,6 +31,8 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-dotenv && react-scripts start",
     "build": "react-dotenv && react-scripts build",
     "test": "react-scripts test",
@@ -53,7 +56,9 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
+  },
   "react-dotenv": {
     "whitelist": [
       "WEATHER_API_KEY",
