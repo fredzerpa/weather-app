@@ -100,17 +100,9 @@ const useStyles = makeStyles(theme => ({
     marginRight: '-5px',
   },
   favoriteButton: {
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration,
-    }),
-
     padding: '8px',
   },
   closeButton: {
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration,
-    }),
-
     padding: '8px',
   },
   cardContent: {},
