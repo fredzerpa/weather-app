@@ -6,7 +6,7 @@ import moment from 'moment';
 // + Environment Variables
 import env from 'react-dotenv';
 
-const BASE_URL = `http://api.openweathermap.org/data/2.5`;
+const BASE_URL = `https://api.openweathermap.org/data/2.5`;
 
 export const getForecast = {
   fiveDaysThreeHours: {
