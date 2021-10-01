@@ -190,8 +190,6 @@ const ForecastCard = ({
   // ! Important: remember passing Object as props for useStyles
   const classes = useStyles({ cardBgUrl }); // Passing the url to Material Styles
 
-  console.log('render', isFavorite);
-
   useEffect(() => {
     // Gets data from Open Weather API using a City as the query
     getForecast.fiveDaysThreeHours.byCity(address.city).then(data => {
