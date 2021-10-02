@@ -11,7 +11,7 @@ yarn
 yarn start
 ```
 
-### `Enviroment Variables`
+### Enviroment Variables
 
 Create a `.env` file and add the keys
 
